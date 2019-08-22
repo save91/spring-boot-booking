@@ -2,13 +2,13 @@
 
 ## Requisiti
 
-- Docker(servirà in futuro)
+- Docker
 - Java 1.8
 - Maven
 
 ## Avvio applicazione
 
-- `docker-compose up -d`(servirà in futuro)
+- `docker-compose up -d`
 - `mvn spring-boot:run`
 
 ## Regole di dominio

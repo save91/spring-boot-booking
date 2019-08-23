@@ -1,12 +1,36 @@
-package tosi.saverio.booking.dto;
+package tosi.saverio.booking.entity;
 
 import java.util.Date;
 
-public class ReservationDTO {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
+public class Reservation {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(nullable = false)
     private Long userId;
+
+    @Column(nullable = false)
     private Long courtId;
+
+    @Column(name = "date_from", nullable = false)
     private Date from;
+
+    @Column(name = "date_to", nullable = false)
     private Date to;
+
+    public Reservation() { }
+
+    public Long getId() {
+        return id;
+    }
 
     public Long getUserId() {
         return userId;
@@ -22,6 +46,10 @@ public class ReservationDTO {
 
     public Date getTo() {
         return to;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setUserId(Long userId) {

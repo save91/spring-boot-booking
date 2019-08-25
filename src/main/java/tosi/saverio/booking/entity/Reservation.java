@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 public class Reservation {
 
@@ -21,9 +23,11 @@ public class Reservation {
     private Long courtId;
 
     @Column(name = "date_from", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date from;
 
     @Column(name = "date_to", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date to;
 
     public Reservation() { }

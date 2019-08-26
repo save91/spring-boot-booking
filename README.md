@@ -5,7 +5,7 @@
 - Docker
 - Java 1.8
 - Maven
-- Aggiungere il seguente host tra quelli predefiniti si sisteam(`/etc/hosts/`)
+- Aggiungere il seguente host tra quelli predefiniti di sistema(`/etc/hosts/`)
 `127.0.0.1 spring-boot-booking_mysql_1`
 
 ## Avvio applicazione

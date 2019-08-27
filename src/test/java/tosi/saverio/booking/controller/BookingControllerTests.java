@@ -1,4 +1,4 @@
-package tosi.saverio.booking;
+package tosi.saverio.booking.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,13 +11,13 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class ReservationTests {
+public class BookingControllerTests {
 
 	@Autowired
 	private WebTestClient webClient;
 
 	@Test
-	public void should_return_all_reservation() {
+	public void should_return_all_bookings() {
 		this.webClient.get().uri("/").exchange().expectStatus().isOk();
 	}
 

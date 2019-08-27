@@ -1,4 +1,4 @@
-package tosi.saverio.booking.entity;
+package tosi.saverio.booking.model.entity;
 
 import java.util.Date;
 
@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-public class Reservation {
+public class Booking {
 
     @Id
     @GeneratedValue
@@ -30,7 +30,7 @@ public class Reservation {
     @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date to;
 
-    public Reservation() { }
+    public Booking() { }
 
     public Long getId() {
         return id;

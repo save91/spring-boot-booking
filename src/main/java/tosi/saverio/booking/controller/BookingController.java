@@ -7,26 +7,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import tosi.saverio.booking.entity.Reservation;
-import tosi.saverio.booking.repository.ReservationRepository;
+import tosi.saverio.booking.model.entity.Booking;
+import tosi.saverio.booking.model.repository.BookingRepository;
 
 @RestController
 public class BookingController {
     private final Logger logger = LoggerFactory.getLogger(BookingController.class);
 
     @Autowired
-    private ReservationRepository reservationRepository;
+    private BookingRepository bookingRepository;
  
     @RequestMapping(value = "/",method= RequestMethod.POST)
-    public String create(@RequestBody Reservation reservation) {
-        reservationRepository.save(reservation);
+    public String create(@RequestBody Booking reservation) {
+        bookingRepository.save(reservation);
 
         return "Created";
     }
 
     @RequestMapping(value = "/",method= RequestMethod.GET)
-    public Iterable<Reservation> findAll() {
-        return reservationRepository.findAll();
+    public Iterable<Booking> findAll() {
+        return bookingRepository.findAll();
     }
 
 }

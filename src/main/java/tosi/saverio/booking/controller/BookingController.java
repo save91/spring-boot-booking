@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import tosi.saverio.booking.model.entity.Booking;
 import tosi.saverio.booking.model.repository.BookingRepository;
 
+import java.util.List;
+
 @RestController
 public class BookingController {
     private final Logger logger = LoggerFactory.getLogger(BookingController.class);
@@ -21,9 +23,15 @@ public class BookingController {
  
     @RequestMapping(value = "/",method= RequestMethod.POST)
     public ResponseEntity<String> create(@RequestBody Booking reservation) {
-        bookingRepository.save(reservation);
+        List<Booking> overlappingBooking = bookingRepository.fetchOverlappingBooking(reservation.getCourtId());
 
-        return new ResponseEntity<>("Created", HttpStatus.CREATED);
+        if (overlappingBooking.size() == 0) {
+            bookingRepository.save(reservation);
+            return new ResponseEntity<>("Created", HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>("The slot was booked", HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @RequestMapping(value = "/",method= RequestMethod.GET)

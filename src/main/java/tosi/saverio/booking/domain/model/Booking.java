@@ -74,11 +74,11 @@ public class Booking {
     }
 
     public boolean assertSlotIsAvailable(Booking booking) throws SlotNotAvailable {
-        if (this.from.compareTo(booking.to) >= 0) {
+        if (this.from.compareTo(booking.getTo()) >= 0) {
             return true;
         }
 
-        if (this.to.compareTo(booking.from) <= 0) {
+        if (this.to.compareTo(booking.getFrom()) <= 0) {
             return true;
         }
 

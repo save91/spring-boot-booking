@@ -10,15 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
-import tosi.saverio.booking.model.entity.Booking;
+import tosi.saverio.booking.domain.model.Booking;
 
 import java.text.*;
-import java.util.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class BookingControllerTests {
-	private DateFormat df = new SimpleDateFormat("YYYY-MM-DD hh:mm");
+	private DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	@Autowired
 	private WebTestClient webClient;

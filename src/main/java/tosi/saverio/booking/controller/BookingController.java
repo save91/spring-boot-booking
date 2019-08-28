@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import tosi.saverio.booking.model.entity.Booking;
-import tosi.saverio.booking.model.repository.BookingRepository;
-
-import java.util.List;
+import tosi.saverio.booking.domain.exception.SlotNotAvailable;
+import tosi.saverio.booking.domain.model.Booking;
+import tosi.saverio.booking.domain.repository.BookingRepository;
+import tosi.saverio.booking.domain.service.BookingCreator;
 
 @RestController
 public class BookingController {
@@ -20,16 +20,18 @@ public class BookingController {
 
     @Autowired
     private BookingRepository bookingRepository;
- 
-    @RequestMapping(value = "/",method= RequestMethod.POST)
-    public ResponseEntity<String> create(@RequestBody Booking reservation) {
-        List<Booking> overlappingBooking = bookingRepository.fetchOverlappingBooking(reservation.getCourtId());
 
-        if (overlappingBooking.size() == 0) {
-            bookingRepository.save(reservation);
+    @Autowired
+    private BookingCreator bookingCreator;
+
+
+    @RequestMapping(value = "/",method= RequestMethod.POST)
+    public ResponseEntity<String> create(@RequestBody Booking booking) {
+        try {
+            bookingCreator.create(booking);
             return new ResponseEntity<>("Created", HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>("The slot was booked", HttpStatus.BAD_REQUEST);
+        } catch (SlotNotAvailable exception) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
     }

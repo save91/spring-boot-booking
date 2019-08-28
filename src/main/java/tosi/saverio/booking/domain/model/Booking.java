@@ -1,4 +1,4 @@
-package tosi.saverio.booking.model.entity;
+package tosi.saverio.booking.domain.model;
 
 import java.util.Date;
 
@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import tosi.saverio.booking.domain.exception.SlotNotAvailable;
 
 @Entity
 public class Booking {
@@ -70,6 +71,18 @@ public class Booking {
 
     public void setTo(Date to) {
         this.to = to;
+    }
+
+    public boolean assertSlotIsAvailable(Booking booking) throws SlotNotAvailable {
+        if (this.from.compareTo(booking.to) >= 0) {
+            return true;
+        }
+
+        if (this.to.compareTo(booking.from) <= 0) {
+            return true;
+        }
+
+        throw new SlotNotAvailable();
     }
 
 }

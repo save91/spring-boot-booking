@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import tosi.saverio.booking.domain.exception.SlotLengthInvalid;
 import tosi.saverio.booking.domain.exception.SlotNotAvailable;
 import tosi.saverio.booking.domain.model.Booking;
 import tosi.saverio.booking.domain.repository.BookingRepository;
@@ -30,7 +31,7 @@ public class BookingController {
         try {
             bookingCreator.create(booking);
             return new ResponseEntity<>("Created", HttpStatus.CREATED);
-        } catch (SlotNotAvailable exception) {
+        } catch (SlotNotAvailable | SlotLengthInvalid exception) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         }
 

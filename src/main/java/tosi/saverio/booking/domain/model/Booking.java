@@ -8,10 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import tosi.saverio.booking.domain.exception.SlotLengthInvalid;
 import tosi.saverio.booking.domain.exception.SlotNotAvailable;
 
 @Entity
 public class Booking {
+    public static final Long ONE_HOUR_TIMESTAMP = 1L * 60 * 60 * 1000;
+    public static final Long THREE_HOURS_TIMESTAMP = 3L * 60 * 60 * 1000;
 
     @Id
     @GeneratedValue
@@ -83,6 +86,15 @@ public class Booking {
         }
 
         throw new SlotNotAvailable();
+    }
+
+    public boolean assertSlotLengthIsValid() throws SlotLengthInvalid {
+        Long difference = to.getTime() - from.getTime();
+        if (difference >= ONE_HOUR_TIMESTAMP && difference <= THREE_HOURS_TIMESTAMP) {
+            return true;
+        }
+
+        throw new SlotLengthInvalid();
     }
 
 }

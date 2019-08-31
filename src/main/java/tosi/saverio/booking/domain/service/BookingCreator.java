@@ -2,6 +2,7 @@ package tosi.saverio.booking.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tosi.saverio.booking.domain.exception.SlotLengthInvalid;
 import tosi.saverio.booking.domain.exception.SlotNotAvailable;
 import tosi.saverio.booking.domain.model.Booking;
 import tosi.saverio.booking.domain.repository.BookingRepository;
@@ -16,7 +17,7 @@ public class BookingCreator {
 
     public BookingCreator() { }
 
-    public Booking create(Booking booking) throws SlotNotAvailable {
+    public Booking create(Booking booking) throws SlotNotAvailable, SlotLengthInvalid {
         List<Booking> bookingOfDay = bookingRepository.fetchBookingByCourtAndDay(
             booking.getCourtId(),
             booking.getFrom()
@@ -25,6 +26,8 @@ public class BookingCreator {
         for (Booking b : bookingOfDay) {
             booking.assertSlotIsAvailable(b);
         }
+
+        booking.assertSlotLengthIsValid();
 
         bookingRepository.save(booking);
 

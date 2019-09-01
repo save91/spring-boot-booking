@@ -1,6 +1,8 @@
 package tosi.saverio.booking.controller;
 
+import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +13,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 import tosi.saverio.booking.domain.model.Booking;
+import tosi.saverio.booking.domain.repository.BookingRepository;
 
 import java.text.*;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -21,6 +25,14 @@ public class BookingControllerTests {
 
 	@Autowired
 	private WebTestClient webClient;
+
+	@Autowired
+	private BookingRepository bookingRepository;
+
+	@Before
+	public void beforeEachTest() {
+		bookingRepository.deleteAll();
+	}
 
 	@Test
 	public void should_return_all_bookings() {
@@ -170,6 +182,33 @@ public class BookingControllerTests {
 				.body(Mono.just(booking), Booking.class)
 				.exchange().expectStatus().isEqualTo(HttpStatus.BAD_REQUEST);
 
+	}
+
+	@Test
+	public void it_should_be_free_booking_when_booking_is_the_tenth() throws ParseException {
+		for (int i = 1; i <= 20; i++) {
+			Booking booking = new Booking();
+			booking.setCourtId(2L);
+			booking.setFrom(df.parse("2018-06-" + i + " 22:00"));
+			booking.setTo(df.parse("2018-06-" + i + " 23:00"));
+			booking.setUserId(1L);
+
+			this.webClient
+					.post()
+					.uri("/")
+					.body(Mono.just(booking), Booking.class)
+					.exchange().expectStatus().isEqualTo(HttpStatus.CREATED);
+		}
+
+		List<Booking> bookings = bookingRepository.findByUserId(1L);
+
+		for (int i = 0; i < 10; i++) {
+			if(i == 9) {
+				assertTrue(bookings.get(i).isFree());
+			} else {
+				assertFalse(bookings.get(i).isFree());
+			}
+		}
 	}
 
 }

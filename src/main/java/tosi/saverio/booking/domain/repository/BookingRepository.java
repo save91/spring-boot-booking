@@ -13,4 +13,6 @@ public interface BookingRepository extends CrudRepository<Booking, Long> {
 
     @Query("SELECT b FROM Booking b WHERE b.courtId=:courtId and DATE(b.from)=DATE(:from)")
     List<Booking> fetchBookingByCourtAndDay(@Param("courtId") Long courtId, @Param("from") Date from);
+
+    List<Booking> findByUserId(Long userId);
 }

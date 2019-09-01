@@ -39,6 +39,9 @@ public class Booking {
     @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date to;
 
+    @Column(columnDefinition = "tinyint(1) default 0", nullable = false)
+    private boolean free;
+
     public Booking() { }
 
     public Long getId() {
@@ -131,4 +134,11 @@ public class Booking {
         return true;
     }
 
+    public boolean isFree() {
+        return free;
+    }
+
+    public void setFree(boolean free) {
+        this.free = free;
+    }
 }

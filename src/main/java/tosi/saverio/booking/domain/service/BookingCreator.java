@@ -56,6 +56,11 @@ public class BookingCreator {
 
         bookingRepository.save(booking);
 
+        if (bookingRepository.findByUserId(booking.getUserId()).size() == 10) {
+            booking.setFree(true);
+            bookingRepository.save(booking);
+        }
+
         return booking;
     }
 }

@@ -2,13 +2,19 @@ package tosi.saverio.booking.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tosi.saverio.booking.domain.exception.ModelNotFound;
 import tosi.saverio.booking.domain.exception.SlotLengthInvalid;
 import tosi.saverio.booking.domain.exception.SlotNotAvailable;
 import tosi.saverio.booking.domain.exception.SlotTimeInvalid;
 import tosi.saverio.booking.domain.model.Booking;
+import tosi.saverio.booking.domain.model.Court;
+import tosi.saverio.booking.domain.model.User;
 import tosi.saverio.booking.domain.repository.BookingRepository;
+import tosi.saverio.booking.domain.repository.CourtRepository;
+import tosi.saverio.booking.domain.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookingCreator {
@@ -16,9 +22,15 @@ public class BookingCreator {
     @Autowired
     private BookingRepository bookingRepository;
 
+    @Autowired
+    private CourtRepository courtRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     public BookingCreator() { }
 
-    public Booking create(Booking booking) throws SlotNotAvailable, SlotLengthInvalid, SlotTimeInvalid {
+    public Booking create(Booking booking) throws SlotNotAvailable, SlotLengthInvalid, SlotTimeInvalid, ModelNotFound {
         List<Booking> bookingOfDay = bookingRepository.fetchBookingByCourtAndDay(
             booking.getCourtId(),
             booking.getFrom()
@@ -30,6 +42,17 @@ public class BookingCreator {
 
         booking.assertSlotLengthIsValid();
         booking.assertTimeIsValid();
+
+        Optional<Court> court = courtRepository.findById(booking.getCourtId());
+        Optional<User> user = userRepository.findById(booking.getUserId());
+
+        if (!court.isPresent()) {
+            throw new ModelNotFound("court");
+        }
+
+        if (!user.isPresent()) {
+            throw new ModelNotFound("user");
+        }
 
         bookingRepository.save(booking);
 

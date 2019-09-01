@@ -31,7 +31,7 @@ public class BookingControllerTests {
 	public void the_slot_should_be_available() throws ParseException {
 		Booking booking = new Booking();
 
-		booking.setCourtId(1L);
+		booking.setCourtId(2L);
 		booking.setFrom(df.parse("2018-04-04 18:00"));
 		booking.setTo(df.parse("2018-04-04 19:00"));
 		booking.setUserId(1L);
@@ -58,25 +58,25 @@ public class BookingControllerTests {
 	@Test
 	public void the_slot_should_be_unavailable() throws ParseException {
 		Booking booking1 = new Booking();
-		booking1.setCourtId(1L);
+		booking1.setCourtId(2L);
 		booking1.setFrom(df.parse("2018-04-03 16:00"));
 		booking1.setTo(df.parse("2018-04-03 18:00"));
 		booking1.setUserId(1L);
 
 		Booking booking2 = new Booking();
-		booking2.setCourtId(1L);
+		booking2.setCourtId(2L);
 		booking2.setFrom(df.parse("2018-04-03 18:00"));
 		booking2.setTo(df.parse("2018-04-03 19:00"));
 		booking2.setUserId(1L);
 
 		Booking booking3 = new Booking();
-		booking3.setCourtId(1L);
+		booking3.setCourtId(2L);
 		booking3.setFrom(df.parse("2018-04-03 19:00"));
 		booking3.setTo(df.parse("2018-04-03 21:00"));
 		booking3.setUserId(1L);
 
 		Booking booking4 = new Booking();
-		booking4.setCourtId(1L);
+		booking4.setCourtId(2L);
 		booking4.setFrom(df.parse("2018-04-03 17:00"));
 		booking4.setTo(df.parse("2018-04-03 20:00"));
 		booking4.setUserId(1L);
@@ -110,7 +110,7 @@ public class BookingControllerTests {
 	@Test
 	public void it_should_fail_when_booking_slot_are_shorter_than_1h() throws ParseException {
 		Booking booking = new Booking();
-		booking.setCourtId(1L);
+		booking.setCourtId(2L);
 		booking.setFrom(df.parse("2018-04-06 17:00"));
 		booking.setTo(df.parse("2018-04-06 17:59"));
 		booking.setUserId(1L);
@@ -126,7 +126,7 @@ public class BookingControllerTests {
 	@Test
 	public void it_should_fail_when_booking_slot_are_longer_than_3h() throws ParseException {
 		Booking booking = new Booking();
-		booking.setCourtId(1L);
+		booking.setCourtId(2L);
 		booking.setFrom(df.parse("2018-04-06 17:00"));
 		booking.setTo(df.parse("2018-04-06 20:01"));
 		booking.setUserId(1L);
@@ -143,7 +143,7 @@ public class BookingControllerTests {
 	@Test
 	public void it_should_fail_when_booking_slot_time_start_before_9() throws ParseException {
 		Booking booking = new Booking();
-		booking.setCourtId(1L);
+		booking.setCourtId(2L);
 		booking.setFrom(df.parse("2018-04-06 8:59"));
 		booking.setTo(df.parse("2018-04-06 9:59"));
 		booking.setUserId(1L);
@@ -159,7 +159,7 @@ public class BookingControllerTests {
 	@Test
 	public void it_should_fail_when_booking_slot_time_end_after_23() throws ParseException {
 		Booking booking = new Booking();
-		booking.setCourtId(1L);
+		booking.setCourtId(2L);
 		booking.setFrom(df.parse("2018-04-06 22:00"));
 		booking.setTo(df.parse("2018-04-06 23:01"));
 		booking.setUserId(1L);

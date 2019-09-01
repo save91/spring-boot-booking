@@ -1,6 +1,8 @@
 package tosi.saverio.booking.domain.model;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,11 +12,14 @@ import javax.persistence.Id;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import tosi.saverio.booking.domain.exception.SlotLengthInvalid;
 import tosi.saverio.booking.domain.exception.SlotNotAvailable;
+import tosi.saverio.booking.domain.exception.SlotTimeInvalid;
 
 @Entity
 public class Booking {
     public static final Long ONE_HOUR_TIMESTAMP = 1L * 60 * 60 * 1000;
     public static final Long THREE_HOURS_TIMESTAMP = 3L * 60 * 60 * 1000;
+    public static final int  FIRST_HOUR_BOOKABLE = 9;
+    public static final int  LAST_HOUR_BOOKABLE = 23;
 
     @Id
     @GeneratedValue
@@ -95,6 +100,35 @@ public class Booking {
         }
 
         throw new SlotLengthInvalid();
+    }
+
+    public boolean assertTimeIsValid() throws SlotTimeInvalid {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(from);
+        int fromHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int fromMinute = calendar.get(Calendar.MINUTE);
+
+        calendar.setTime(to);
+        int toHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int toMinute = calendar.get(Calendar.MINUTE);
+
+        if (isHourValid(fromHour, fromMinute) & isHourValid(toHour, toMinute)) {
+            return true;
+        }
+
+        throw new SlotTimeInvalid();
+    }
+
+    private boolean isHourValid(int hour, int minute) {
+        if (hour < FIRST_HOUR_BOOKABLE) {
+            return false;
+        }
+
+        if ((hour > LAST_HOUR_BOOKABLE) | ((hour == LAST_HOUR_BOOKABLE) & minute > 0)) {
+            return false;
+        }
+
+        return true;
     }
 
 }

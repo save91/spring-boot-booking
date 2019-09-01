@@ -139,4 +139,37 @@ public class BookingControllerTests {
 
 	}
 
+
+	@Test
+	public void it_should_fail_when_booking_slot_time_start_before_9() throws ParseException {
+		Booking booking = new Booking();
+		booking.setCourtId(1L);
+		booking.setFrom(df.parse("2018-04-06 8:59"));
+		booking.setTo(df.parse("2018-04-06 9:59"));
+		booking.setUserId(1L);
+
+		this.webClient
+				.post()
+				.uri("/")
+				.body(Mono.just(booking), Booking.class)
+				.exchange().expectStatus().isEqualTo(HttpStatus.BAD_REQUEST);
+
+	}
+
+	@Test
+	public void it_should_fail_when_booking_slot_time_end_after_23() throws ParseException {
+		Booking booking = new Booking();
+		booking.setCourtId(1L);
+		booking.setFrom(df.parse("2018-04-06 22:00"));
+		booking.setTo(df.parse("2018-04-06 23:01"));
+		booking.setUserId(1L);
+
+		this.webClient
+				.post()
+				.uri("/")
+				.body(Mono.just(booking), Booking.class)
+				.exchange().expectStatus().isEqualTo(HttpStatus.BAD_REQUEST);
+
+	}
+
 }

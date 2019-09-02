@@ -12,6 +12,8 @@ import tosi.saverio.booking.domain.model.User;
 import tosi.saverio.booking.domain.repository.BookingRepository;
 import tosi.saverio.booking.domain.repository.CourtRepository;
 import tosi.saverio.booking.domain.repository.UserRepository;
+import tosi.saverio.booking.service.Mailer;
+import tosi.saverio.booking.service.Sms;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +29,12 @@ public class BookingCreator {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private Mailer mailer;
+
+    @Autowired
+    private Sms sms;
 
     public BookingCreator() { }
 
@@ -55,6 +63,9 @@ public class BookingCreator {
         }
 
         bookingRepository.save(booking);
+
+        mailer.send(user.get().getEmail(), "Booked");
+        sms.send(user.get().getPhone(), "Booked");
 
         if (bookingRepository.findByUserId(booking.getUserId()).size() == 10) {
             booking.setFree(true);

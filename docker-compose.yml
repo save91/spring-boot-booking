@@ -1,6 +1,7 @@
-version: '3'
+version: '3.7'
 services:
   mysql:
+    container_name: spring-boot-booking_mysql_1
     image: mysql:5.7
     ports:
       - 3306:3306
